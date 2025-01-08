@@ -1,0 +1,4 @@
+# Rust specific ignores
+/target/
+**/*.rs.bk
+*.pdb

@@ -1,0 +1,26 @@
+[package]
+name = "sertest"
+version = "0.1.0"
+edition = "2021"
+description = "A serial port stress testing tool"
+license = "MIT"
+authors = ["Yelo <zhihuzeye@gmail.com>"]
+repository = "https://github.com/imyelo/sertest"
+publish = false
+
+[[bin]]
+name = "sertest"
+path = "src/main.rs"
+
+[dependencies]
+serialport = "4.2"
+clap = { version = "4.4", features = ["derive"] }
+ctrlc = "3.4"
+hex = "0.4"
+anyhow = "1.0"
+
+[profile.release]
+opt-level = 'z'
+lto = true
+codegen-units = 1
+strip = true
