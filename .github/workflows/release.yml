@@ -89,6 +89,9 @@ jobs:
         run: |
           cd artifacts
           ls -la
+          chmod +x sertest-linux-amd64/sertest
+          chmod +x sertest-macos-amd64/sertest
+          chmod +x sertest-macos-arm64/sertest
           tar -czf sertest-linux-amd64.tar.gz sertest-linux-amd64/*
           7z a sertest-windows-amd64.exe.zip sertest-windows-amd64.exe/*
           tar -czf sertest-macos-amd64.tar.gz sertest-macos-amd64/*
