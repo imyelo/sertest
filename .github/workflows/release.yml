@@ -13,22 +13,10 @@ jobs:
       matrix:
         include:
           # Linux x86_64
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
             artifact_name: sertest
             asset_name: sertest-linux-amd64
-
-          # Linux ARM64
-          - os: ubuntu-latest
-            target: aarch64-unknown-linux-gnu
-            artifact_name: sertest
-            asset_name: sertest-linux-arm64
-
-          # Linux MUSL
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-musl
-            artifact_name: sertest
-            asset_name: sertest-linux-musl
 
           # Windows x86_64
           - os: windows-latest
@@ -58,20 +46,15 @@ jobs:
           targets: ${{ matrix.target }}
           components: rustfmt, clippy
 
-      # Install dependencies for ARM and MUSL builds
+      # Install dependencies for Linux builds
       - name: Install dependencies
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y musl-tools
-          if [[ "${{ matrix.target }}" == "aarch64-unknown-linux-gnu" ]]; then
-            sudo apt-get install -y gcc-aarch64-linux-gnu
-          fi
+          sudo apt-get install -y libudev-dev pkg-config
 
       - name: Build
         run: cargo build --release --target ${{ matrix.target }}
-        env:
-          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
 
       - name: Prepare assets
         shell: bash
@@ -100,8 +83,6 @@ jobs:
         with:
           files: |
             sertest-linux-amd64.tar.gz
-            sertest-linux-arm64.tar.gz
-            sertest-linux-musl.tar.gz
             sertest-windows-amd64.exe.zip
             sertest-macos-amd64.tar.gz
             sertest-macos-arm64.tar.gz
